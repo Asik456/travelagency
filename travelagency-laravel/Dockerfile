@@ -17,12 +17,12 @@ WORKDIR /app
 
 # Install PHP dependencies (cached layer)
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-autoloader
+RUN composer install --no-dev --no-scripts --no-autoloader
 
 # Copy the rest of the app
 COPY . .
 
-RUN composer dump-autoload --optimize
+RUN composer dump-autoload --optimize --no-scripts
 
 # Build frontend assets
 RUN npm ci && npm run build
