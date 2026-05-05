@@ -40,20 +40,23 @@ class AuthController extends Controller
 
     public function checkRegister(Request $request)
     {
-        $password = $request->input('password');
-        $confirm = $request->input('confirm');
-
-        if ($password !== $confirm) {
-            return back()->withErrors(['confirm' => 'Passwords do not match'])->withInput();
-        }
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'confirm'  => 'required|same:password',
+            'phone'    => 'nullable|string|max:20',
+            'dob'      => 'nullable|date',
+            'country'  => 'nullable|string|max:100',
+        ]);
 
         $user = User::create([
             'name'     => $request->input('name'),
             'email'    => $request->input('email'),
-            'password' => Hash::make($password),
-            'phone'    => $request->input('phone'),
-            'dob'      => $request->input('dob'),
-            'country'  => $request->input('country'),
+            'password' => Hash::make($request->input('password')),
+            'phone'    => $request->input('phone') ?: null,
+            'dob'      => $request->input('dob') ?: null,
+            'country'  => $request->input('country') ?: null,
             'role'     => 'traveler',
         ]);
 
