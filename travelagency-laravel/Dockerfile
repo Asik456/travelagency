@@ -25,7 +25,7 @@ COPY . .
 RUN composer dump-autoload --optimize --no-scripts
 
 # Build frontend assets
-RUN npm ci && npm run build
+RUN npm install && npm run build
 
 RUN chmod +x render-start.sh
 
