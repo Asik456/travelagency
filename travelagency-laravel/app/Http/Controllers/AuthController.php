@@ -60,11 +60,6 @@ class AuthController extends Controller
             'role'     => 'traveler',
         ]);
 
-        try {
-            Mail::to($user->email)->send(new WelcomeEmail($user));
-        } catch (\Exception $e) {
-        }
-
         Auth::login($user);
         session(['user_id' => $user->id, 'user_name' => $user->name, 'user_role' => $user->role]);
 
